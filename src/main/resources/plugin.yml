@@ -1,0 +1,25 @@
+name: UptownsExtraInventory
+description: $description
+version: '${version}'
+
+main: me.piksel.uptownsExtraInventory.UptownsExtraInventory
+api-version: '1.21.11'
+load: POSTWORLD
+
+authors: [ PikselWasTaken ]
+website: https://github.com/SomeoneTakePiksel
+permissions:
+  uptown.inv:
+    description: "inventory"
+    default: true
+  uptown.inv.admin:
+    description: "inventory control"
+    default: op
+    children:
+      uptown.inv: true
+commands:
+  inv:
+    description: "extra inventory"
+    usage: "/inv <Player>"
+    permission: uptown.inv
+
