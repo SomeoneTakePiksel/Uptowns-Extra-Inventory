@@ -8,9 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 public class invCommand implements BasicCommand {
     private static final int size = UptownsExtraInventory.getInstance().getConfig().getInt("size") ;
     @Override
@@ -63,4 +62,16 @@ public class invCommand implements BasicCommand {
         }
         return;
     }
+
+    @Override
+    public Collection<String> suggest(CommandSourceStack sender, String[] args) {
+        if (!sender.getSender().hasPermission("uptown.inv.admin"))return Collections.emptyList();
+        List<String> names = new ArrayList<>();
+        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+            names.add(player.getName());
+        }
+        return names;
+    }
+
+
 }

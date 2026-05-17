@@ -7,7 +7,7 @@ api-version: '1.21.11'
 load: POSTWORLD
 
 authors: [ PikselWasTaken ]
-website: https://github.com/SomeoneTakePiksel/Uptowns-Extra-Inventory
+website: https://modrinth.com/plugin/uptowns-extra-inventory
 permissions:
   uptown.inv:
     description: "inventory"
