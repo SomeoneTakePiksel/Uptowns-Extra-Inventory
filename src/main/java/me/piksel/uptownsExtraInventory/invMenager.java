@@ -15,8 +15,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public class invMenager {
-    private static final int size = 54;
-    private static final String title = "Extra Inventory";
+    private static final int size = UptownsExtraInventory.getInstance().getConfig().getInt("size") ;
+
+    private static final String title = UptownsExtraInventory.getInstance().getConfig().getString("title");
     public static String getTitle(){return title;}
 
     public static Inventory getInvOff(UUID uuid, String name) {
@@ -27,8 +28,8 @@ public class invMenager {
 
             Inventory inv = Bukkit.createInventory(
                     null,
-                    54,
-                    name + "'s Backpack"
+                    size,
+                    name + "'s Inventory"
             );
 
             loadInv(uuid, inv);

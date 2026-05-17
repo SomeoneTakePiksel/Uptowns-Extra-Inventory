@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 public class invCommand implements BasicCommand {
+    private static final int size = UptownsExtraInventory.getInstance().getConfig().getInt("size") ;
     @Override
     public void execute(CommandSourceStack sender, String[] args){
         if (!(sender.getSender() instanceof Player player)) return;
@@ -49,7 +50,7 @@ public class invCommand implements BasicCommand {
             // Create viewer inventory
             Inventory view = Bukkit.createInventory(
                     null,
-                    54,
+                    size,
                     target.getName() + "'s Extra Inventory(can't edit)"
             );
 

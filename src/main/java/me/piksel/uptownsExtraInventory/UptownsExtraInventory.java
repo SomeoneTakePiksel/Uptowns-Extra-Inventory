@@ -1,6 +1,7 @@
 package me.piksel.uptownsExtraInventory;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,9 @@ public final class UptownsExtraInventory extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        saveResource("config.yml",false);
+        saveDefaultConfig();
+
         // Plugin startup logic
         registerCommand("inv",new invCommand());
         getServer().getPluginManager().registerEvents(new invListener(),this);
@@ -31,4 +35,6 @@ public final class UptownsExtraInventory extends JavaPlugin {
     public Map<UUID, Inventory> getInvs() {
         return invs;
     }
+
+
 }

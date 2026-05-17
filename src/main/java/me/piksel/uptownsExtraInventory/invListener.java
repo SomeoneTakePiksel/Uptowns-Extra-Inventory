@@ -33,7 +33,8 @@ public class invListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        player.sendRichMessage("<yellow>This server is using</yellow> <green>Uptowns Extra Inventory</green> \n to use the extra inventory: <purple>/inv</purple>");
+
+        player.sendRichMessage("<yellow>This server is using</yellow> <green>Uptowns Extra Inventory</green> \n to use the extra inventory: <light_purple>/inv</light_purple>");
     }
 
 }
