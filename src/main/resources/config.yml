@@ -4,6 +4,12 @@
 #must be a : 9,18,27,36,45 or 54
 size: 54
 
+#select how many slots should be disabled
+#don't execed the max size
+blocked-amount: 0
+
 
 #title for extra inventory
 title: "Extra Inventory"
+
+
