@@ -63,10 +63,11 @@ public class invMenager {
             item.setItemMeta(meta);
 
 
+
+            loadInv(uuid, inv);
             for (int i = size -1; i >= size - blocked; i--){
                 inv.setItem(i,item);
             }
-            loadInv(uuid, inv);
             return inv;
         });
     }
@@ -104,8 +105,16 @@ public class invMenager {
         }
         File file = new File(invFolder, uuid + ".yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        Inventory newInv = inv;
+        for (ItemStack i : newInv.getContents()){
+            if (i == null || i.getType() == Material.AIR)continue;
+            if (i.getType() == Material.BLACK_STAINED_GLASS_PANE && i.getEnchantmentLevel(Enchantment.UNBREAKING) == 10 && i != null) {
+                newInv.removeItemAnySlot(i);
+                continue;
+            }
+        }
 
-        config.set("items", inv.getContents());
+        config.set("items", newInv.getContents());
 
         try {
             config.save(file);
@@ -117,6 +126,13 @@ public class invMenager {
     }
 
     public static void loadInv(UUID uuid, Inventory inv) {
+        for (ItemStack i : inv.getContents()){
+            if (i == null)continue;
+            if (i.getType() == Material.BLACK_STAINED_GLASS_PANE && i.getEnchantmentLevel(Enchantment.UNBREAKING) == 10) {
+                inv.removeItemAnySlot(i);
+                continue;
+            }
+        }
 
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         item.addUnsafeEnchantment(Enchantment.UNBREAKING,10);

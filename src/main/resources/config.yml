@@ -13,3 +13,7 @@ blocked-amount: 0
 title: "Extra Inventory"
 
 
+
+drop-items: true
+
+

@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -23,12 +24,6 @@ public class invListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (!event.getView().getTitle().equals(invMenager.getTitle())) return;
-        for (int i = 0; i < size; i++){
-            ItemStack item = event.getInventory().getItem(i);
-            if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10){
-                event.getInventory().setItem(i,null);
-            }
-        }
         Player player = (Player) event.getPlayer();
         Inventory inv = event.getInventory();
 
@@ -40,15 +35,8 @@ public class invListener implements Listener {
         Player player = event.getPlayer();
 
         Inventory inv = UptownsExtraInventory.getInstance().getInvs().get(player.getUniqueId());
-        if (inv != null) {
-            for (int i = 0; i < size; i++){
-                ItemStack item = inv.getItem(i);
-                if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10){
-                    inv.setItem(i,null);
-                }
-            }
-            invMenager.saveInv(player.getUniqueId(), inv);
-        }
+        invMenager.saveInv(player.getUniqueId(), inv);
+
     }
 
     @EventHandler
@@ -65,7 +53,7 @@ public class invListener implements Listener {
 
         if (clickedInventory != null && customInventoryTitle.equals(event.getView().getTitle())) {
             ItemStack item = event.getInventory().getItem(event.getSlot());
-            if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10) {
+            if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10 && item != null) {
                 event.setCancelled(true);
             }
         }
@@ -75,10 +63,22 @@ public class invListener implements Listener {
     public void onInventoryDrag(InventoryDragEvent event) {
         if (customInventoryTitle.equals(event.getView().getTitle())) {
             ItemStack item = event.getCursor();
-            if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10) {
+            if (item.getType() == Material.BLACK_STAINED_GLASS_PANE && item.getEnchantmentLevel(Enchantment.UNBREAKING) == 10 && item != null) {
                 event.setCancelled(true);
             }
         }
+    }
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event){
+        Player player = event.getPlayer();
+        Inventory inv = invMenager.getInv(player);
+        for (ItemStack i : inv.getContents()) {
+            if (i.getType() == Material.AIR && i == null) continue;
+            player.getWorld().dropItem(player.getLocation(), i);
+        }
+        inv.clear();
+
+        invMenager.saveInv(player.getUniqueId(),inv);
     }
 
 }

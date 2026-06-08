@@ -3,17 +3,23 @@ package me.piksel.uptownsExtraInventory;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 public class invCommand implements BasicCommand {
     private static final int size = UptownsExtraInventory.getInstance().getConfig().getInt("size") ;
+    private static final int blocked = UptownsExtraInventory.getInstance().getConfig().getInt("blocked-amount") ;
     @Override
     public void execute(CommandSourceStack sender, String[] args){
+
         if (!(sender.getSender() instanceof Player player)) return;
         //player.sendRichMessage("<green>Openning inventory...");
         if (!player.hasPermission("uptown.inv")){
@@ -23,6 +29,15 @@ public class invCommand implements BasicCommand {
 
         if (args.length == 0) {
             Inventory inv = invMenager.getInv(player);
+            ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
+            item.addUnsafeEnchantment(Enchantment.UNBREAKING,10);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName("BLOCKED");
+            item.setItemMeta(meta);
+
+            for (int i = size -1; i >= size - blocked; i--){
+                inv.setItem(i,item);
+            }
             player.openInventory(inv);
             return;
         }
